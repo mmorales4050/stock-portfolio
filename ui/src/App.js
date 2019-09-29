@@ -5,28 +5,20 @@ import LoginForm from './components/LoginForm'
 
 class App extends Component {
   state = {
-    signIn: true
+    register: false
   }
 
-  toggleSignIn = (e) => {
+  toggleRegister = (e) => {
     e.preventDefault()
-    this.setState({singIn: !this.state.singIn})
-  }
-
-  renderLogin = () => {
-    if(this.state.signIn) {
-      return <LoginForm singIn={true} toggleSignIn={this.toggleSignIn}/>
-    }else {
-      return <LoginForm singIn={false} toggleSignIn={this.toggleSignIn}/>
-    }
+    this.setState({register: !this.state.register})
   }
 
   render() {
     return (
       <div className="App">
-      {this.renderLogin()}
+      <LoginForm register={this.state.register} toggleRegister={this.toggleRegister} />
       </div>
-    );
+    )
   }
 }
 
