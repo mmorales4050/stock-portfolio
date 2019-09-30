@@ -8,6 +8,19 @@ class App extends Component {
     register: false
   }
 
+  componentDidMount() {
+    fetch("http://localhost:3000/sessions", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        email: "sam11@gmail.com",
+        password: "123"
+      })
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+  }
+
   toggleRegister = (e) => {
     e.preventDefault()
     this.setState({register: !this.state.register})
