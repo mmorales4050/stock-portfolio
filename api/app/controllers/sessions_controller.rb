@@ -1,17 +1,19 @@
 class SessionsController < ApplicationController
 
   def create
-    user = User.all.select { |u| u.email == params[:email] && u.password == params[:password]}
+    user = User.all.find_by email: params[:email], password: params[:password]
 
-    if user.length < 1
-      render json: {}
-    else
+    if user
       render json: {
-        name: user[0].name,
-        email: user[0].email,
-        password: user[0].password,
-        cash: user[0].cash
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        cash: user.cash,
+        stocks: Stock.all.select { |s| s.user_id == user.id},
+        transactions: Transaction.all.select { |t| t.user_id == user.id}
       }
+    else
+      render json: {}
     end
   end
 

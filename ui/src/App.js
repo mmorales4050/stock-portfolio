@@ -7,7 +7,7 @@ import AccountPage from './components/AccountPage'
 class App extends Component {
   state = {
     page: "LOGIN",
-    user: {cash:1000}
+    user: null
   }
 
   loginUser = (user) => {
@@ -17,6 +17,7 @@ class App extends Component {
     })
     this.setPage("ACCOUNT")
   }
+
   setPage = (page) => {
     let newState = {...this.state, page: page}
     this.setState(newState)

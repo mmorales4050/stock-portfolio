@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Message, Segment} from 'semantic-ui-react'
 
 
 class LoginForm extends Component {
@@ -7,7 +7,8 @@ class LoginForm extends Component {
     register: this.props.register,
     name: "",
     email: "",
-    password: ""
+    password: "",
+    warning: false
   }
 
   // Toggle between Login and Register Pages
@@ -58,7 +59,13 @@ class LoginForm extends Component {
         if(user.name) {
           this.props.loginUser(user)
         } else {
-          console.log("invalid info")
+          if(!this.state.warning){
+            this.setState({...this.state, warning: true})
+            let i = setInterval(() => {
+              this.setState({...this.state, warning: false})
+              window.clearInterval(i)
+            } , 2000)
+          }
         }
       })
     }
@@ -76,6 +83,7 @@ class LoginForm extends Component {
               {!this.state.register ? null : <Form.Input fluid  placeholder='name' onChange={this.handleChange}/>}
               <Form.Input fluid  placeholder='email' onChange={this.handleChange}/>
               <Form.Input fluid placeholder='password' onChange={this.handleChange} type='password'/>
+
               <Button color='teal' fluid size='large' onClick={this.handleClick}>
                 {!this.state.register ? "Login" : "Create Account"}
               </Button>
@@ -86,6 +94,7 @@ class LoginForm extends Component {
             {!this.state.register ? "Sign Up" : "Login"}
             </a>
           </Message>
+          {this.state.warning ? <Message color="yellow" size="mini" content='Please enter valid email and password'/> : <div style={{height:"37.443px"}}/>}
         </Grid.Column>
       </Grid>
     )
