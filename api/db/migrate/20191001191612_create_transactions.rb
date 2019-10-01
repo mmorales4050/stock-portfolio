@@ -1,9 +1,9 @@
 class CreateTransactions < ActiveRecord::Migration[5.2]
   def change
     create_table :transactions do |t|
-      t.string :ticker,
-      t.integer :shares,
-      t.decimal :price,
+      t.string :ticker
+      t.integer :shares
+      t.decimal :price
       t.integer :user_id
 
       t.timestamps
