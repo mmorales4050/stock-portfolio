@@ -9,6 +9,7 @@ class SessionsController < ApplicationController
       render json: {
         name: user[0].name,
         email: user[0].email,
+        password: user[0].password,
         cash: user[0].cash
       }
     end

@@ -56,7 +56,7 @@ class LoginForm extends Component {
       .then(res => res.json())
       .then(user => {
         if(user.name) {
-          console.log("You are logged in")
+          this.props.loginUser(user)
         } else {
           console.log("invalid info")
         }

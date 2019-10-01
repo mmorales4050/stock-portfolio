@@ -6,26 +6,17 @@ import AccountPage from './components/AccountPage'
 
 class App extends Component {
   state = {
-    page: "LOGIN",
-    name: "",
-    email: "",
-    password: "",
-    cash: 0
+    page: "ACCOUNT",
+    user: {cash:1000}
   }
 
-  // componentDidMount() {
-  //   fetch("http://localhost:3000/sessions", {
-  //     method: "POST",
-  //     headers: {"Content-Type": "application/json"},
-  //     body: JSON.stringify({
-  //       email: "sam11@gmail.com",
-  //       password: "123"
-  //     })
-  //   })
-  //   .then(res => res.json())
-  //   .then(res => console.log(res))
-  // }
-
+  loginUser = (user) => {
+    this.setState({
+      ...this.state,
+      user: user
+    })
+    this.setPage("ACCOUNT")
+  }
   setPage = (page) => {
     let newState = {...this.state, page: page}
     this.setState(newState)
@@ -34,9 +25,9 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.page) {
       case "LOGIN":
-        return <LoginForm register={false} />
+        return <LoginForm loginUser={this.loginUser} register={false} />
       case "ACCOUNT":
-        return <AccountPage />
+        return <AccountPage user={this.state.user}/>
     }
   }
 
