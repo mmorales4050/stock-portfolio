@@ -14,23 +14,25 @@ class TransactionForm extends Component {
     this.setState(newState)
   }
 
-  formatDate = () => {
-    let date = new Date(new Date() - (60000 * 10)).toString().split(" ")[4]
-
-    date = date.split("").reverse()
-    date[0] = "0"
-    date[1] = "0"
-
-    return date.reverse().join("")
-  }
-
   handleClick = (e) => {
-    fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${"MSFT"}&interval=1min&outputsize=compact&apikey=3RDVDP5T21BBP1FG`)
+    fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.ticker}&interval=1min&outputsize=compact&apikey=3RDVDP5T21BBP1FG`)
       .then(res => res.json())
       .then(res => {
         if(res["Time Series (1min)"]){
-          console.log(res["Time Series (1min)"])
-          console.log(this.formatDate())
+          // Post Transaction
+          fetch("http://localhost:3000/transactions", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+              user: this.props.user,
+              ticker: this.state.ticker,
+              shares: parseInt(this.state.quantity),
+              price: parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["1. open"])
+            })
+          })
+
+          // Post Stock
+          console.log(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["1. open"])
         }else {
           console.log("Invalid Ticker")
         }

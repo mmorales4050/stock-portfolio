@@ -6,7 +6,7 @@ import AccountPage from './components/AccountPage'
 
 class App extends Component {
   state = {
-    page: "ACCOUNT",
+    page: "LOGIN",
     user: {cash:1000}
   }
 
