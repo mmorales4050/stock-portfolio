@@ -11,10 +11,24 @@ class LoginForm extends Component {
     warning: false
   }
 
+  activeButton = () => {
+    if(this.state.register) {
+      return this.state.name === "" || this.state.email === "" || this.state.password === ""
+    } else {
+      return this.state.email === "" || this.state.password === ""
+    }
+  }
+
+  inputWarning = () => {
+    if(this.state.register) {
+      return this.state.warning ? <Message color="yellow" size="small" content='You can only sign up for an account once with a given e-mail address'/> : <div style={{height:"44.18px"}}/>
+    }
+    return this.state.warning ? <Message color="yellow" size="small" content='Please enter valid email and password'/> : <div style={{height:"44.18px"}}/>
+  }
   // Toggle between Login and Register Pages
   toggleRegister = (e) => {
     e.preventDefault()
-    let newState = {...this.state, register: !this.state.register}
+    let newState = {...this.state, register: !this.state.register, warning: false}
     this.setState(newState)
   }
 
@@ -40,9 +54,16 @@ class LoginForm extends Component {
       .then(res => res.json())
       .then(user => {
         if(user.name) {
-          console.log("Account Created")
+          this.props.loginUser(user)
         } else {
-          console.log("email already used")
+          this.setState({...this.state, name: "", email: "", password: ""})
+          if(!this.state.warning){
+            this.setState({...this.state, warning: true})
+            let i = setInterval(() => {
+              this.setState({...this.state, warning: false})
+              window.clearInterval(i)
+            } , 5000)
+          }
         }
       })
     }else {
@@ -59,12 +80,13 @@ class LoginForm extends Component {
         if(user.name) {
           this.props.loginUser(user)
         } else {
+          this.setState({...this.state, email: "", password: ""})
           if(!this.state.warning){
             this.setState({...this.state, warning: true})
             let i = setInterval(() => {
               this.setState({...this.state, warning: false})
               window.clearInterval(i)
-            } , 2000)
+            } , 3000)
           }
         }
       })
@@ -80,11 +102,11 @@ class LoginForm extends Component {
           </Header>
           <Form size='large'>
             <Segment>
-              {!this.state.register ? null : <Form.Input fluid  placeholder='name' onChange={this.handleChange}/>}
-              <Form.Input fluid  placeholder='email' onChange={this.handleChange}/>
-              <Form.Input fluid placeholder='password' onChange={this.handleChange} type='password'/>
+              {!this.state.register ? null : <Form.Input fluid  placeholder='name' value={this.state.name} onChange={this.handleChange}/>}
+              <Form.Input fluid  placeholder='email' warning="email already used" value={this.state.email} onChange={this.handleChange}/>
+              <Form.Input fluid placeholder='password' value={this.state.password} onChange={this.handleChange} type='password'/>
 
-              <Button color='teal' fluid size='large' onClick={this.handleClick}>
+              <Button disabled={this.activeButton()} color='teal' fluid size='large' onClick={this.handleClick}>
                 {!this.state.register ? "Login" : "Create Account"}
               </Button>
             </Segment>
@@ -94,7 +116,7 @@ class LoginForm extends Component {
             {!this.state.register ? "Sign Up" : "Login"}
             </a>
           </Message>
-          {this.state.warning ? <Message color="yellow" size="mini" content='Please enter valid email and password'/> : <div style={{height:"37.443px"}}/>}
+          {this.inputWarning()}
         </Grid.Column>
       </Grid>
     )
