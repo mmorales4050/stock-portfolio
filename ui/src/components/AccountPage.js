@@ -8,6 +8,7 @@ class AccountPage extends Component {
   state = {
     portfolio: true
   }
+  
   render() {
     return (
       <div>

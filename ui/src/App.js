@@ -6,8 +6,35 @@ import AccountPage from './components/AccountPage'
 
 class App extends Component {
   state = {
-    page: "LOGIN",
-    user: null
+    page: "ACCOUNT",
+    user: {
+      name: "Sam Smith",
+      email: "samsmith@gmail.com",
+      cash: 5000.00,
+      password: "123",
+      stocks: [
+        {
+          ticker: "WMD",
+          shares: 2
+        },
+        {
+          ticker: "MMM",
+          shares: 3
+        }
+      ],
+      transactions: [
+        {
+          ticker: "WMD",
+          shares: 2,
+          price: 10.12
+        },
+        {
+          ticker: "MMM",
+          shares: 3,
+          price: 11.22
+        }
+      ]
+    }
   }
 
   loginUser = (user) => {
