@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import TransactionForm from './TransactionForm'
+import StockList from './StockList'
 import { Button, Form, Grid, Header, Image, Message, Segment, Container, Menu} from 'semantic-ui-react'
 
 class AccountPage extends Component {
 
   state = {
-    transactions: false
+    portfolio: true
   }
   render() {
     return (
@@ -20,10 +21,7 @@ class AccountPage extends Component {
     </Container>
       <Header as='h3' content='' textAlign='center' />
           <Grid container columns={2} divided relaxed stackable>
-            <Grid.Column>
-            <Header as='h3' content='Portfolio' textAlign='center' />
-              <Segment>Content</Segment>
-            </Grid.Column>
+            <StockList portfolio={this.state.portfolio} user={this.props.user}/>
             <TransactionForm user={this.props.user}/>
           </Grid>
       </div>
