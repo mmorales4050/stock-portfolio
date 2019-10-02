@@ -13,7 +13,7 @@ class Stock extends Component {
         :
         this.props.stock.ticker
       }
-      {this.props.portfolio ? <span style={{float: "right"}}>{`$${this.props.value * this.props.shares}`}</span> : null}
+      {this.props.portfolio ? <span style={{float: "right"}}>{`$${(this.props.value * this.props.stock.shares).toFixed(2)}`}</span> : null}
       </Segment>
     );
   }

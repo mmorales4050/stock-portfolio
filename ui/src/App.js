@@ -5,33 +5,37 @@ import LoginForm from './components/LoginForm'
 import AccountPage from './components/AccountPage'
 
 class App extends Component {
+  // state = {
+  //   page: "ACCOUNT",
+  //   user: {
+  //     name: "Sam Smith",
+  //     email: "samsmith@gmail.com",
+  //     cash: 5000.00,
+  //     password: "123",
+  //     stocks: [
+  //       {
+  //         ticker: "msft",
+  //         shares: 2
+  //       }
+  //     ],
+  //     transactions: [
+  //       {
+  //         ticker: "WMD",
+  //         shares: 2,
+  //         price: 10.12
+  //       },
+  //       {
+  //         ticker: "MMM",
+  //         shares: 3,
+  //         price: 11.22
+  //       }
+  //     ]
+  //   }
+  // }
   state = {
-    page: "ACCOUNT",
-    user: {
-      name: "Sam Smith",
-      email: "samsmith@gmail.com",
-      cash: 5000.00,
-      password: "123",
-      stocks: [
-        {
-          ticker: "msft",
-          shares: 2
-        }
-      ],
-      transactions: [
-        {
-          ticker: "WMD",
-          shares: 2,
-          price: 10.12
-        },
-        {
-          ticker: "MMM",
-          shares: 3,
-          price: 11.22
-        }
-      ]
-    }
-  }
+    page: "LOGIN",
+    user: {}
+}
 
   loginUser = (user) => {
     this.setState({

@@ -4,7 +4,7 @@ import { Grid, Header, Segment} from 'semantic-ui-react'
 
 class StockList extends Component {
   state = {
-    value: 0,
+    total: 0.0,
     values: {}
   }
 
@@ -16,16 +16,15 @@ class StockList extends Component {
         .then(res => {
           let values = {...this.state.values}
           values[stock.ticker] = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
-          this.setState({...this.state, values: values})
+          this.setState({...this.state, values: values, total: this.state.total + (values[stock.ticker] * stock.shares)})
         })
     })
-
   }
 
   render() {
     return (
       <Grid.Column>
-      <Header as='h3' content={this.props.portfolio ? `Portfolio ($${this.state.value})` : 'Transactions'} textAlign='center' />
+      <Header as='h3' content={this.props.portfolio ? `Portfolio ($${this.state.total.toFixed(2)})` : 'Transactions'} textAlign='center' />
       {
         this.props.user.stocks.map((stock) => {
           return <Stock stock={stock} portfolio={this.props.portfolio} value={this.state.values[stock.ticker]}/>
