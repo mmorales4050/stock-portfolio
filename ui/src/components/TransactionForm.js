@@ -27,7 +27,7 @@ class TransactionForm extends Component {
               user: this.props.user,
               ticker: this.state.ticker,
               shares: parseInt(this.state.quantity),
-              price: parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["1. open"])
+              price: parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
             })
           })
 

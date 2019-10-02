@@ -4,7 +4,17 @@ class Stock extends Component {
 
   render() {
     return (
-      <Segment>Content</Segment>
+      <Segment vertical textAlign="left">
+      {
+        this.props.portfolio
+        ?
+        `${this.props.stock.ticker.toUpperCase()} - ${this.props.stock.shares} Shares`
+
+        :
+        this.props.stock.ticker
+      }
+      {this.props.portfolio ? <span style={{float: "right"}}>{`$${this.props.value * this.props.shares}`}</span> : null}
+      </Segment>
     );
   }
 

@@ -14,12 +14,8 @@ class App extends Component {
       password: "123",
       stocks: [
         {
-          ticker: "WMD",
+          ticker: "msft",
           shares: 2
-        },
-        {
-          ticker: "MMM",
-          shares: 3
         }
       ],
       transactions: [
