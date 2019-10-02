@@ -26,7 +26,13 @@ class StockList extends Component {
       <Grid.Column>
       <Header as='h3' content={this.props.portfolio ? `Portfolio ($${this.state.total.toFixed(2)})` : 'Transactions'} textAlign='center' />
       {
+        this.props.portfolio
+        ?
         this.props.user.stocks.map((stock) => {
+          return <Stock stock={stock} portfolio={this.props.portfolio} value={this.state.values[stock.ticker]}/>
+        })
+        :
+        this.props.user.transactions.map((stock) => {
           return <Stock stock={stock} portfolio={this.props.portfolio} value={this.state.values[stock.ticker]}/>
         })
       }
