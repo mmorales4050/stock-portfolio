@@ -76,9 +76,9 @@ class TransactionForm extends Component {
                 } , 3000)
               } else {
                 // Valid transaction
+                this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
                 this.setState({...this.state, ticker: "", quantity: ""})
                 this.props.setUser(res)
-                this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
               }
             })
           }else if (res["Note"]){

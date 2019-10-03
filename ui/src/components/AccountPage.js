@@ -65,7 +65,7 @@ class AccountPage extends Component {
       let values = {...this.state.values}
       values[ticker] = price
       values[`${ticker}-open`] = openPrice
-      this.setState({...this.state, values: values, total: this.state.total + (values[ticker] * shares)})
+      this.setState({...this.state, values: values, total: this.state.total + (price * shares)})
   }
 
   handleClick = (e) => {
