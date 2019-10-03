@@ -36,39 +36,61 @@ class TransactionForm extends Component {
 
   handleClick = (e) => {
     // Check that quantity is whole number
-
-    let price // save price of stock
-    let openPrice // save days opening price of stock
-    fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.ticker}&interval=1min&outputsize=full&apikey=3RDVDP5T21BBP1FG`)
-      .then(res => res.json())
-      .then(res => {
-        console.log(res)
-        if(res["Time Series (1min)"]){
-          // Save price
-          price = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
-          openPrice = parseFloat(res["Time Series (1min)"][`${this.props.getDate()} 09:31:00`]["1. open"])
-          // Post Transaction
-          fetch("http://localhost:3000/transactions", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({
-              user: this.props.user,
-              ticker: this.state.ticker,
-              shares: parseInt(this.state.quantity),
-              price: price
+    if(this.state.quantity.includes(".")){
+      // invalid quantity
+      this.setState({...this.state, decimalWarning: true, ticker: "", quantity: ""})
+      let i = setInterval(() => {
+        this.setState({...this.state, decimalWarning: false})
+        window.clearInterval(i)
+      } , 3000)
+    } else {
+      let price // save price of stock
+      let openPrice // save days opening price of stock
+      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.ticker}&interval=1min&outputsize=full&apikey=3RDVDP5T21BBP1FG`)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res)
+          if(res["Time Series (1min)"]){
+            // Save price
+            price = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
+            openPrice = parseFloat(res["Time Series (1min)"][`${this.props.getDate()} 09:31:00`]["1. open"])
+            // Post Transaction
+            fetch("http://localhost:3000/transactions", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({
+                user: this.props.user,
+                ticker: this.state.ticker,
+                shares: parseInt(this.state.quantity),
+                price: price
+              })
             })
-          })
-          .then(res => res.json())
-          .then(res => {
-            this.props.setUser(res)
-            this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
-          })
-        }else if (res["Note"]){
-          console.log("API limit reached")
-        } else {
-          console.log("Invalid Ticker")
-        }
-      })
+            .then(res => res.json())
+            .then(res => {
+              this.props.setUser(res)
+              this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
+            })
+          }else if (res["Note"]){
+            // API warning
+            this.setState({...this.state, ticker: "", quantity: ""})
+            this.props.setApiWarning()
+          } else if (res["invalid"]){
+            // not enough cash warning
+            this.setState({...this.state, cashWarning: true, ticker: "", quantity: ""})
+            let i = setInterval(() => {
+              this.setState({...this.state, cashWarning: false})
+              window.clearInterval(i)
+            } , 3000)
+          } else {
+            // invalid ticker warning
+            this.setState({...this.state, tickerWarning: true, ticker: "", quantity: ""})
+            let i = setInterval(() => {
+              this.setState({...this.state, tickerWarning: false})
+              window.clearInterval(i)
+            } , 3000)
+          }
+        })
+    }
   }
 
   render() {
@@ -81,7 +103,7 @@ class TransactionForm extends Component {
         value={this.state.ticker}
         />
         <br/>
-        <Input type="number" id='quantity' placeholder='Qty' style={{padding: "10px"}}  onChange={this.handleChange}/>
+        <Input type="number" id='quantity' placeholder='Qty' style={{padding: "10px"}}  onChange={this.handleChange} value={this.state.quantity}/>
         <br/>
         <Button disabled={this.activeButton()} onClick={this.handleClick}>Buy</Button>
         {this.inputWarning()}

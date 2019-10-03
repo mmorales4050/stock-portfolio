@@ -27,7 +27,9 @@ class TransactionsController < ApplicationController
         transactions: Transaction.all.select { |t| t.user_id == user.id}
       }
     else
-      render json: {}
+      render json: {
+        invalid: true
+      }
     end
   end
 end
