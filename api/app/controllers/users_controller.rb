@@ -9,7 +9,9 @@ class UsersController < ApplicationController
         name: user.name,
         email: user.email,
         password: user.password,
-        cash: user.cash
+        cash: user.cash,
+        stocks: [],
+        transactions: []
       }
     else
       render json: {}

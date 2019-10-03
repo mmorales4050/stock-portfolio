@@ -34,7 +34,7 @@ class AccountPage extends Component {
             {
               this.state.portfolio
               ?
-              <TransactionForm user={this.props.user}/>
+              <TransactionForm user={this.props.user} setUser={this.props.setUser}/>
               :
               null
             }

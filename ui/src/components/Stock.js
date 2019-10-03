@@ -11,7 +11,7 @@ class Stock extends Component {
         `${this.props.stock.ticker.toUpperCase()} - ${this.props.stock.shares} Shares`
 
         :
-        `BUY (${this.props.stock.ticker}) - ${this.props.stock.shares} Shares @ ${this.props.stock.price.toFixed(2)}`
+        `BUY (${this.props.stock.ticker}) - ${this.props.stock.shares} Shares @ ${parseFloat(this.props.stock.price).toFixed(2)} each`
       }
       {this.props.portfolio ? <span style={{float: "right"}}>{`$${(this.props.value * this.props.stock.shares).toFixed(2)}`}</span> : null}
       </Segment>

@@ -10,7 +10,7 @@ class TransactionForm extends Component {
 
   handleChange = (e) => {
     let newState = {...this.state}
-    newState[e.target.id] = e.target.value
+    newState[e.target.id] = e.target.value.toUpperCase()
     this.setState(newState)
   }
 
@@ -30,9 +30,10 @@ class TransactionForm extends Component {
               price: parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
             })
           })
-
-          // Post Stock
-          console.log(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["1. open"])
+          .then(res => res.json())
+          .then(res => {
+            this.props.setUser(res)
+          })
         }else {
           console.log("Invalid Ticker")
         }
@@ -45,9 +46,11 @@ class TransactionForm extends Component {
       <Header as='h3' textAlign='center'>
       Cash - ${this.props.user.cash}
       </Header>
-        <Input id='ticker' placeholder='Ticker' onChange={this.handleChange}/>
+        <Input type="text" id='ticker' placeholder='Ticker' onChange={this.handleChange}
+        value={this.state.ticker}
+        />
         <br/>
-        <Input id='quantity' placeholder='Qty' style={{padding: "10px"}} onChange={this.handleChange}/>
+        <Input type="number" id='quantity' placeholder='Qty' style={{padding: "10px"}} onChange={this.handleChange}/>
         <br/>
         <Button onClick={this.handleClick}>Buy</Button>
       </Grid.Column>

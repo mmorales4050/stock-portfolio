@@ -19,9 +19,12 @@ class TransactionsController < ApplicationController
         stock = Stock.create ticker: params[:ticker], shares: params[:shares], user_id: user.id
       end
       render json: {
-        transaction: transaction,
-        user: user,
-        stock: stock
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        cash: user.cash,
+        stocks: Stock.all.select { |s| s.user_id == user.id},
+        transactions: Transaction.all.select { |t| t.user_id == user.id}
       }
     else
       render json: {}
