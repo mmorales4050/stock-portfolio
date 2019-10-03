@@ -35,7 +35,8 @@ class App extends Component {
 
   state = {
     page: "LOGIN",
-    user: {}
+    user: {},
+    apiWarning: false
 }
 
   loginUser = (user) => {
@@ -53,6 +54,23 @@ class App extends Component {
     })
   }
 
+  setApiWarningLogin = () => {
+    this.setState({...this.state, apiWarning: true})
+    let i = setInterval(() => {
+      this.setState({...this.state, apiWarning: false})
+      window.clearInterval(i)
+    } , 5000)
+    this.setPage("LOGIN")
+  }
+
+  setApiWarning = () => {
+    this.setState({...this.state, apiWarning: true})
+    let i = setInterval(() => {
+      this.setState({...this.state, apiWarning: false})
+      window.clearInterval(i)
+    } , 5000)
+  }
+
   setPage = (page) => {
     let newState = {...this.state, page: page}
     this.setState(newState)
@@ -61,9 +79,9 @@ class App extends Component {
   renderPage = () => {
     switch (this.state.page) {
       case "LOGIN":
-        return <LoginForm loginUser={this.loginUser} register={false} />
+        return <LoginForm loginUser={this.loginUser} register={false} apiWarning={this.state.apiWarning}/>
       case "ACCOUNT":
-        return <AccountPage user={this.state.user} setUser={this.setUser}/>
+        return <AccountPage user={this.state.user} setUser={this.setUser} apiWarning={this.state.apiWarning} setApiWarning={this.setApiWarning} setApiWarningLogin={this.setApiWarningLogin}/>
     }
   }
 

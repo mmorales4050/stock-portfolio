@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Grid, Header, Image, Message, Segment} from 'semantic-ui-react'
+import Warning from './Warning';
 
 
 class LoginForm extends Component {
@@ -20,10 +21,14 @@ class LoginForm extends Component {
   }
 
   inputWarning = () => {
-    if(this.state.register) {
-      return this.state.warning ? <Message color="yellow" size="small" content='You can only sign up for an account once with a given e-mail address'/> : <div style={{height:"44.18px"}}/>
+    if(this.props.apiWarning){
+      return <Warning message='API call limit reached please wait and try again later' warning={this.props.apiWarning}/>
+    }else {
+      if(this.state.register) {
+        return <Warning message='You can only sign up for an account once with a given e-mail address' warning={this.state.warning}/>
+      }
+      return <Warning message='Please enter valid email and password' warning={this.state.warning}/>
     }
-    return this.state.warning ? <Message color="yellow" size="small" content='Please enter valid email and password'/> : <div style={{height:"44.18px"}}/>
   }
   // Toggle between Login and Register Pages
   toggleRegister = (e) => {

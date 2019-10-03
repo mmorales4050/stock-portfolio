@@ -20,6 +20,7 @@ class TransactionForm extends Component {
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.ticker}&interval=1min&outputsize=full&apikey=3RDVDP5T21BBP1FG`)
       .then(res => res.json())
       .then(res => {
+        console.log(res)
         if(res["Time Series (1min)"]){
           // Save price
           price = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
@@ -40,7 +41,9 @@ class TransactionForm extends Component {
             this.props.setUser(res)
             this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
           })
-        }else {
+        }else if (res["Note"]){
+          console.log("API limit reached")
+        } else {
           console.log("Invalid Ticker")
         }
       })
