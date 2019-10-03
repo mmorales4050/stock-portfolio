@@ -54,7 +54,7 @@ class TransactionForm extends Component {
             price = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
             openPrice = parseFloat(res["Time Series (1min)"][`${this.props.getDate()} 09:31:00`]["1. open"])
             // Post Transaction
-            fetch("http://localhost:3000/transactions", {
+            fetch("https://mighty-hamlet-54458.herokuapp.com/transactions", {
               method: "POST",
               headers: {"Content-Type": "application/json"},
               body: JSON.stringify({

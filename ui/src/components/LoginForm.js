@@ -47,7 +47,7 @@ class LoginForm extends Component {
   // Handle create account and login actions
   handleClick = (e) => {
     if(this.state.register) {
-      fetch("http://localhost:3000/users", {
+      fetch("https://mighty-hamlet-54458.herokuapp.com/users", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
@@ -72,7 +72,7 @@ class LoginForm extends Component {
         }
       })
     }else {
-      fetch("http://localhost:3000/sessions", {
+      fetch("https://mighty-hamlet-54458.herokuapp.com/sessions", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
