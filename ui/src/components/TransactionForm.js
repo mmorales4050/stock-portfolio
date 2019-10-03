@@ -67,20 +67,24 @@ class TransactionForm extends Component {
             })
             .then(res => res.json())
             .then(res => {
-              this.props.setUser(res)
-              this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
+              if(res["invalid"]){
+                // not enough cash warning
+                this.setState({...this.state, cashWarning: true, ticker: "", quantity: ""})
+                let i = setInterval(() => {
+                  this.setState({...this.state, cashWarning: false})
+                  window.clearInterval(i)
+                } , 3000)
+              } else {
+                // Valid transaction
+                this.setState({...this.state, ticker: "", quantity: ""})
+                this.props.setUser(res)
+                this.props.setValue(this.state.ticker, this.state.quantity, price, openPrice)
+              }
             })
           }else if (res["Note"]){
             // API warning
             this.setState({...this.state, ticker: "", quantity: ""})
             this.props.setApiWarning()
-          } else if (res["invalid"]){
-            // not enough cash warning
-            this.setState({...this.state, cashWarning: true, ticker: "", quantity: ""})
-            let i = setInterval(() => {
-              this.setState({...this.state, cashWarning: false})
-              window.clearInterval(i)
-            } , 3000)
           } else {
             // invalid ticker warning
             this.setState({...this.state, tickerWarning: true, ticker: "", quantity: ""})
@@ -97,7 +101,7 @@ class TransactionForm extends Component {
     return (
       <Grid.Column>
       <Header as='h3' textAlign='center'>
-      Cash - ${this.props.user.cash}
+      Cash - ${parseFloat(this.props.user.cash).toFixed(2)}
       </Header>
         <Input type="text" id='ticker' placeholder='Ticker' onChange={this.handleChange}
         value={this.state.ticker}
