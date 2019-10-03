@@ -3,9 +3,6 @@ import Stock from './Stock';
 import { Grid, Header, Segment} from 'semantic-ui-react'
 
 class StockList extends Component {
-  state = {
-    total: 0.0
-  }
 
   render() {
     return (
@@ -15,7 +12,7 @@ class StockList extends Component {
         this.props.portfolio
         ?
         this.props.user.stocks.map((stock) => {
-          return <Stock stock={stock} portfolio={this.props.portfolio} value={this.props.values[stock.ticker]}/>
+          return <Stock stock={stock} portfolio={this.props.portfolio} value={this.props.values[stock.ticker]} openValue={this.props.values[`${stock.ticker}-open`]}/>
         })
         :
         this.props.user.transactions.map((stock) => {

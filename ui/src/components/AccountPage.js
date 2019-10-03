@@ -16,23 +16,41 @@ class AccountPage extends Component {
     this.getValues()
   }
 
+  getDate = () => {
+    var d = new Date(),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
   getValues = () => {
     // Fetch total value of portfolio
     // Fetch current stock values
     this.props.user.stocks.forEach((stock) => {
-      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stock.ticker}&interval=1min&outputsize=compact&apikey=3RDVDP5T21BBP1FG`)
+      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stock.ticker}&interval=1min&outputsize=full&apikey=3RDVDP5T21BBP1FG`)
         .then(res => res.json())
         .then(res => {
           let values = {...this.state.values}
+          // Set Latest Price
           values[stock.ticker] = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
+          // Set Days opening price
+          values[`${stock.ticker}-open`] = parseFloat(res["Time Series (1min)"][`${this.getDate()} 09:31:00`]["1. open"])
           this.setState({...this.state, values: values, total: this.state.total + (values[stock.ticker] * stock.shares)})
         })
     })
   }
 
-  setValue = (ticker, shares, price) => {
+  setValue = (ticker, shares, price, openPrice) => {
       let values = {...this.state.values}
       values[ticker] = price
+      values[`${ticker}-open`] = openPrice
       this.setState({...this.state, values: values, total: this.state.total + (values[ticker] * shares)})
   }
 
@@ -61,7 +79,7 @@ class AccountPage extends Component {
             {
               this.state.portfolio
               ?
-              <TransactionForm user={this.props.user} setUser={this.props.setUser} setValue={this.setValue}/>
+              <TransactionForm user={this.props.user} setUser={this.props.setUser} setValue={this.setValue} getDate={this.getDate}/>
               :
               null
             }
