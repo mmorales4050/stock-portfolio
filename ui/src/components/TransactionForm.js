@@ -15,10 +15,13 @@ class TransactionForm extends Component {
   }
 
   handleClick = (e) => {
+    let price // save price of stock
     fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.state.ticker}&interval=1min&outputsize=compact&apikey=3RDVDP5T21BBP1FG`)
       .then(res => res.json())
       .then(res => {
         if(res["Time Series (1min)"]){
+          // Save price
+          price = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
           // Post Transaction
           fetch("http://localhost:3000/transactions", {
             method: "POST",
@@ -27,12 +30,13 @@ class TransactionForm extends Component {
               user: this.props.user,
               ticker: this.state.ticker,
               shares: parseInt(this.state.quantity),
-              price: parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
+              price: price
             })
           })
           .then(res => res.json())
           .then(res => {
             this.props.setUser(res)
+            this.props.setValue(this.state.ticker, this.state.quantity, price)
           })
         }else {
           console.log("Invalid Ticker")

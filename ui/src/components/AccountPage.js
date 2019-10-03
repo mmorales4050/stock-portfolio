@@ -6,7 +6,34 @@ import { Button, Form, Grid, Header, Image, Message, Segment, Container, Menu} f
 class AccountPage extends Component {
 
   state = {
-    portfolio: true
+    portfolio: true,
+    updateValues: false,
+    values: {},
+    total: 0.0
+  }
+
+  componentDidMount() {
+    this.getValues()
+  }
+
+  getValues = () => {
+    // Fetch total value of portfolio
+    // Fetch current stock values
+    this.props.user.stocks.forEach((stock) => {
+      fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${stock.ticker}&interval=1min&outputsize=compact&apikey=3RDVDP5T21BBP1FG`)
+        .then(res => res.json())
+        .then(res => {
+          let values = {...this.state.values}
+          values[stock.ticker] = parseFloat(res["Time Series (1min)"][res["Meta Data"]["3. Last Refreshed"]]["4. close"])
+          this.setState({...this.state, values: values, total: this.state.total + (values[stock.ticker] * stock.shares)})
+        })
+    })
+  }
+
+  setValue = (ticker, shares, price) => {
+      let values = {...this.state.values}
+      values[ticker] = price
+      this.setState({...this.state, values: values, total: this.state.total + (values[ticker] * shares)})
   }
 
   handleClick = (e) => {
@@ -30,11 +57,11 @@ class AccountPage extends Component {
     </Container>
       <Header as='h3' content='' textAlign='center' />
           <Grid container columns={2} divided relaxed stackable>
-            <StockList portfolio={this.state.portfolio} user={this.props.user}/>
+            <StockList values={this.state.values}  portfolio={this.state.portfolio} user={this.props.user} total={this.state.total}/>
             {
               this.state.portfolio
               ?
-              <TransactionForm user={this.props.user} setUser={this.props.setUser}/>
+              <TransactionForm user={this.props.user} setUser={this.props.setUser} setValue={this.setValue}/>
               :
               null
             }
