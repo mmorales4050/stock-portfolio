@@ -50,10 +50,10 @@ class AccountPage extends Component {
             // Set Days opening price
             values[`${stock.ticker}-open`] = parseFloat(res["Time Series (1min)"][`${this.getDate()} 09:31:00`]["1. open"])
             this.setState({...this.state, values: values, total: this.state.total + (values[stock.ticker] * stock.shares)})
-            // Loading finished
           }
         })
-        .then((r)=>{
+        // Loading finished
+        .then( r => {
           if(i === (this.props.user.stocks.length - 1)){
             this.setState({...this.state, loading: false})
           }
@@ -95,7 +95,7 @@ class AccountPage extends Component {
                 {
                   this.state.portfolio
                   ?
-                  <TransactionForm user={this.props.user} setUser={this.props.setUser} setValue={this.setValue} getDate={this.getDate}/>
+                  <TransactionForm user={this.props.user} setUser={this.props.setUser} setValue={this.setValue} getDate={this.getDate} apiWarning={this.props.apiWarning} setApiWarning={this.props.setApiWarning}/>
                   :
                   null
                 }
