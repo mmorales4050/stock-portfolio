@@ -102,7 +102,7 @@ class LoginForm extends Component {
     return (
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as='h2' color='teal' textAlign='center'>
+          <Header as='h2' style={{color: "#44829e"}} textAlign='center'>
             {!this.state.register ? "Sign In" : "Register"}
           </Header>
           <Form size='large'>
@@ -111,7 +111,7 @@ class LoginForm extends Component {
               <Form.Input fluid  placeholder='email' warning="email already used" value={this.state.email} onChange={this.handleChange}/>
               <Form.Input fluid placeholder='password' value={this.state.password} onChange={this.handleChange} type='password'/>
 
-              <Button disabled={this.activeButton()} color='teal' fluid size='large' onClick={this.handleClick}>
+              <Button disabled={this.activeButton()} style={{backgroundColor: "#44829e", color: "white"}} fluid size='large' onClick={this.handleClick}>
                 {!this.state.register ? "Login" : "Create Account"}
               </Button>
             </Segment>

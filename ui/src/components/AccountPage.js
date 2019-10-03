@@ -80,8 +80,8 @@ class AccountPage extends Component {
     return (
         <div>
         <Container>
-          <Menu>
-            <Menu.Menu stackable position="right">
+          <Menu style={{border: "0px solid black", boxShadow: "0px 0px 0px black"}}>
+            <Menu.Menu position="right">
             <Menu.Item id="portfolio" name="Portfolio" onClick={this.handleClick}></Menu.Item>
             <Menu.Item name="Transactions" onClick={this.handleClick}></Menu.Item>
             </Menu.Menu>

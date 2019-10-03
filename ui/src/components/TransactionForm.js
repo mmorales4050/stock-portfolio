@@ -109,7 +109,7 @@ class TransactionForm extends Component {
         <br/>
         <Input type="number" id='quantity' placeholder='Qty' style={{padding: "10px"}}  onChange={this.handleChange} value={this.state.quantity}/>
         <br/>
-        <Button disabled={this.activeButton()} onClick={this.handleClick}>Buy</Button>
+        <Button  disabled={this.activeButton()} style={{backgroundColor: "#44829e", color: "white"}}  onClick={this.handleClick}>Buy</Button>
         {this.inputWarning()}
       </Grid.Column>
     );
