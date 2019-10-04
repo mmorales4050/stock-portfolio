@@ -8,7 +8,7 @@ class UsersController < ApplicationController
       render json: {
         name: user.name,
         email: user.email,
-        password: user.password,
+        password: user.password_digest,
         cash: user.cash,
         stocks: [],
         transactions: []
