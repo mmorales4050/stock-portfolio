@@ -2,6 +2,8 @@
 
 ## Create an account with name, email, and password.
 
+- [Demo Link](https://mmorales4050.github.io/stock-portfolio/)
+
 - Users can buy stocks at the current price
 
 - Users can view their portfolio of stocks at each stocks current market value
@@ -12,4 +14,4 @@
 
 - React front end
 
-- Ruby on Rails backend restful API with Bycrypt for Authenication
+- Ruby on Rails restful API backend with Bcrypt for Authentication
