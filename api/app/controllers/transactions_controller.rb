@@ -1,8 +1,7 @@
 class TransactionsController < ApplicationController
 
   def create
-    user = User.all.find_by email: params[:user][:email], password: params[:user][:password]
-
+    user = User.all.find_by email: params[:user][:email], password_digest: params[:user][:password]
     # Check if user can afford stocks
     if user.cash > (params[:price] * params[:shares])
       # Create Transaction
@@ -21,7 +20,7 @@ class TransactionsController < ApplicationController
       render json: {
         name: user.name,
         email: user.email,
-        password: user.password,
+        password: user.password_digest,
         cash: user.cash,
         stocks: Stock.all.select { |s| s.user_id == user.id},
         transactions: Transaction.all.select { |t| t.user_id == user.id}
