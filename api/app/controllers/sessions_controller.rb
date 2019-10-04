@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   def create
-    user = User.all.find_by email: params[:email], password: params[:password]
+    user = User.all.find_by email: params[:email].downcase, password: params[:password]
 
     if user
       render json: {
